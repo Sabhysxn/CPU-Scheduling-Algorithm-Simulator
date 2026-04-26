@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPU Scheduling Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="animatedBg"></canvas>
+    
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <h1>CPU Scheduling Calculator</h1>
+            <p>Calculate scheduling algorithms with interactive Gantt charts</p>
+        </div>
+        <button id="themeToggle" class="theme-toggle" title="Toggle Dark/Light Mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Input Section -->
+        <section class="card input-section">
+            <h2 class="card-title">Select CPU Scheduling Algorithm:</h2>
+            
+            <div class="form-group full-width">
+                <select id="algorithm" class="form-input algorithm-select">
+                    <option value="fcfs">First Come First Serve (FCFS)</option>
+                    <option value="sjf">Shortest Job First (SJF) - Non-Preemptive</option>
+                    <option value="srtf">Shortest Remaining Time First (SRTF) - Preemptive</option>
+                    <option value="priority-np">Priority Scheduling - Non-Preemptive</option>
+                    <option value="priority-p">Priority Scheduling - Preemptive</option>
+                    <option value="rr">Round Robin (RR)</option>
+                </select>
+            </div>
+
+            <h2 class="card-title" style="margin-top: 2rem;">Process Details:</h2>
+            
+            <div class="process-table-container">
+                <table class="process-input-table">
+                    <thead>
+                        <tr>
+                            <th>Process</th>
+                            <th>Arrival Time</th>
+                            <th>Burst Time</th>
+                            <th>Priority</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="processTableBody">
+                        <tr class="empty-row">
+                            <td colspan="5" style="text-align: center; color: #999;">No processes added yet</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="input-form">
+                <div class="form-group">
+                    <label>Process ID</label>
+                    <input type="text" id="processId" placeholder="e.g., P1" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Arrival Time</label>
+                    <input type="number" id="arrivalTime" placeholder="0" min="0" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Burst Time</label>
+                    <input type="number" id="burstTime" placeholder="0" min="1" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <input type="number" id="priority" placeholder="0" min="1" class="form-input">
+                </div>
+                <div class="form-group" id="quantumGroup" style="display: none;">
+                    <label>Time Quantum (RR)</label>
+                    <input type="number" id="quantum" placeholder="2" min="1" class="form-input">
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button id="addBtn" class="btn btn-add">Add Process</button>
+                <button id="generateBtn" class="btn btn-secondary">Generate Random</button>
+                <button id="resetBtn" class="btn btn-reset">Reset</button>
+            </div>
+
+            <button id="simulateBtn" class="btn btn-calculate">Calculate Schedule</button>
+        </section>
+
+        <!-- Results Section -->
+        <section class="card results-section" id="resultsSection" style="display: none;">
+            <!-- Gantt Chart -->
+            <div class="gantt-section">
+                <h2 class="card-title">Gantt Chart</h2>
+                <div class="gantt-container">
+                    <div id="ganttChart" class="gantt-chart"></div>
+                    <div class="gantt-timeline"></div>
+                </div>
+            </div>
+
+            <!-- Statistics Table -->
+            <div class="stats-section">
+                <h2 class="card-title">Process Statistics</h2>
+                <div class="table-wrapper">
+                    <table id="statsTable" class="stats-table">
+                        <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>Arrival Time</th>
+                                <th>Burst Time</th>
+                                <th>Completion Time</th>
+                                <th>Turnaround Time</th>
+                                <th>Waiting Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>Average Waiting Time</h3>
+                    <p id="avgWaitingTime" class="summary-value">0.00</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Average Turnaround Time</h3>
+                    <p id="avgTurnaroundTime" class="summary-value">0.00</p>
+                </div>
+                <div class="summary-card">
+                    <h3>CPU Utilization</h3>
+                    <p id="cpuUtilization" class="summary-value">0.00%</p>
+                </div>
+                <div class="summary-card">
+                    <h3>Total Execution Time</h3>
+                    <p id="totalTime" class="summary-value">0</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
